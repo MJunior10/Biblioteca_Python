@@ -238,7 +238,7 @@ def catalogo():
 
                 return jsonify(resultado), 200
             else: 
-                return jsonify({"message": "Não foram encontrados livros nesse genero"}), 404
+                return jsonify({"message": "Não foram;. encontrados livros nesse genero"}), 404
         else:
             return jsonify({"error": "Genero não fornecido"}), 400
     except Exception as e:
