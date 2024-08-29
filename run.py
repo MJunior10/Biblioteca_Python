@@ -217,6 +217,32 @@ def reservasporlivro(id_livro):
     else:
         return jsonify({"error": "Livro não encontrado"}), 404
 
+@app.route('/catalogo_genero', methods=['POST'])
+def catalogo():
+    try:  
+        genero = request.form.get('genero')
+        if genero:
+            livros = Livro.query.filter_by(genero=genero).all()
+            if livros:
+                resultado = [
+                    {
+                        "id": livro.id,
+                        "titulo": livro.titulo,
+                        "autor": livro.autor,
+                        "ano": livro.ano,
+                        "genero": livro.genero,
+                        "editora": livro.editora
+                    }
+                    for livro in livros
+                ]
+
+                return jsonify(resultado), 200
+            else: 
+                return jsonify({"message": "Não foram encontrados livros nesse genero"}), 404
+        else:
+            return jsonify({"error": "Genero não fornecido"}), 400
+    except Exception as e:
+        return jsonify({"error": f"Erro ao buscar livros: {str(e)}"}), 500
 
 if __name__ == '__main__':
     with app.app_context():
