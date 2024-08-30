@@ -138,15 +138,15 @@ def editar_usuarios():
     try:
         id = request.form.get('id')
         if not id:
-            return jsonify({"message": "Usuario não existe"})
+            return jsonify({"message": "ID do usuario não fornecido"}), 400
         
         user = Usuario.query.get(id)
         if user:
 
-            nome = request.form['nome']
-            email = request.form['email']
-            telefone = request.form['telefone']
-            senha = request.form['senha']
+            nome = request.form.get('nome')
+            email = request.form.get('email')
+            telefone = request.form.get('telefone')
+            senha = request.form.get('senha')
 
             if nome:
                 user.nome = nome
@@ -163,8 +163,6 @@ def editar_usuarios():
         else:
             return jsonify({"error": "Usuário não encontrado"}), 404
 
-    except KeyError as e:
-        return jsonify({"error": f"Campo Ausente: {e}"}), 400
     except Exception as e:
         return jsonify({"error": f"Erro ao editar usuário: {str(e)}"}), 500
 
