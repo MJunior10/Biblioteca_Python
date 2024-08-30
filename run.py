@@ -133,6 +133,41 @@ def cadastrar_usuarios():
     except Exception as e:
         return jsonify({"error": "Erro ao cadastrar usuario:{e}"}), 500
 
+@app.route('/editar_usuarios', methods=['POST'])
+def editar_usuarios():
+    try:
+        id = request.form.get('id')
+        if not id:
+            return jsonify({"message": "Usuario não existe"})
+        
+        user = Usuario.query.get(id)
+        if user:
+
+            nome = request.form['nome']
+            email = request.form['email']
+            telefone = request.form['telefone']
+            senha = request.form['senha']
+
+            if nome:
+                user.nome = nome
+            if email:
+                user.email = email
+            if telefone:
+                user.telefone = telefone
+            if senha:
+                hashed_senha = bcrypt.generate_password_hash(senha).decode('utf-8')
+                user.senha = hashed_senha
+
+            db.session.commit()
+            return jsonify({"message": "Usuário atualizado com sucesso"}), 200
+        else:
+            return jsonify({"error": "Usuário não encontrado"}), 404
+
+    except KeyError as e:
+        return jsonify({"error": f"Campo Ausente: {e}"}), 400
+    except Exception as e:
+        return jsonify({"error": f"Erro ao editar usuário: {str(e)}"}), 500
+
 @app.route('/login', methods=['POST'])
 def login():
     try:
