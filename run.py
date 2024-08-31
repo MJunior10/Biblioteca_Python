@@ -277,6 +277,16 @@ def catalogo():
     except Exception as e:
         return jsonify({"error": f"Erro ao buscar livros: {str(e)}"}), 500
 
+def lista_livros():
+    try:
+        if livros:
+            livros = Livro,query.all()
+            return (livros), 200
+        else: 
+            return jsonify({"message": "Não existe nenhum livro cadastrado"})
+    except Exception as e:
+        return jsonify({"error:", f"Erro ao listar livros: {str(e)}"})
+
 if __name__ == '__main__':
     with app.app_context():
         try:
