@@ -276,7 +276,8 @@ def catalogo():
             return jsonify({"error": "Genero não fornecido"}), 400
     except Exception as e:
         return jsonify({"error": f"Erro ao buscar livros: {str(e)}"}), 500
-
+        
+@app.route('/catalogo_geral', methods=['POST'])
 def lista_livros():
     try:
         if livros:
